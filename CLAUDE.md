@@ -30,17 +30,22 @@ User Input → WebScraperAgent → AnalyzerAgent → LetterAgent → Output
 - [x] Requirements.txt with NVIDIA stack (NeMo, Guardrails, LangChain)
 - [x] .gitignore configured
 - [x] CLAUDE.md created
+- [x] Python virtual environment setup
+- [x] WebScraperAgent (web scraping + NYC Open Data API)
+- [x] HTML parsing with BeautifulSoup
+- [x] Legal text extraction from multiple sources
 
 ### 🔄 In Progress
-- [ ] Basic agent structure setup
-- [ ] NYC.gov scraper prototype
+- [ ] Testing combined API + web scraping data
+- [ ] Building AnalyzerAgent
 
 ### 📋 Todo
-- [ ] WebScraperAgent implementation
 - [ ] AnalyzerAgent with NeMo Guardrails
 - [ ] LetterAgent with templates
+- [ ] LangGraph multi-agent orchestration
 - [ ] Streamlit UI
-- [ ] LangGraph visualization
+- [ ] NVIDIA NeMo integration
+- [ ] Brev.dev GPU deployment
 - [ ] Demo preparation
 
 ## Technical Notes
