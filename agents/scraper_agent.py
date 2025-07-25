@@ -23,8 +23,8 @@ class WebScraperAgent:
             response = requests.get(url)
             return response.text
         except:
-          print(f"Error getting {url}")
-          return None
+            print(f"Error getting {url}")
+            return None
 
 
 # Test it - this only runs if we run this file directly
