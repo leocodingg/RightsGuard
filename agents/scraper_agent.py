@@ -29,6 +29,8 @@ class WebScraperAgent:
                 'Upgrade-Insecure-Requests': '1'
             }
             response = requests.get(url, headers=headers, timeout=10)
+            print(f"Status code: {response.status_code}")
+            print(f"URL after redirects: {response.url}")
             return response.text
         except Exception as e:
             print(f"Error getting {url}: {e}")
@@ -54,6 +56,38 @@ class WebScraperAgent:
                         break # so don't add the same element twice
 
         return relevant_info
+    
+    def search_nyc_open_data(self, query):
+        """
+        Search NYC Open Data API for tenant-related information
+        This gives us real violation data, not just laws
+        """
+        try:
+            import json  # Need this for API responses
+
+            # NYC's housing violations dataset
+            url = "https://data.cityofnewyork.us/resource/wvxf-dwi5.json"
+
+            # Parameters for the API
+            params = {
+                '$q': query,      # Search query
+                '$limit': 5       # Only get 5 results for now
+            }
+
+            # Make the API call
+            response = requests.get(url, params=params, timeout=10)
+
+            if response.status_code == 200:
+                violations = response.json()
+                print(f"API returned {len(violations)} violations")
+                return violations
+            else:
+                print(f"API error: {response.status_code}")
+                return []
+
+        except Exception as e:
+            print(f"Error calling API: {e}")
+            return []
 
 # Test it - this only runs if we run this file directly
 if __name__ == "__main__":
@@ -75,7 +109,8 @@ if __name__ == "__main__":
 
       # Test with NYC tenant rights page
     print("\n--- Testing legal info extraction ---")
-    nyc_url = agent.nyc_urls['main']
+    # Let's test with a site that works
+    nyc_url = "https://www.nolo.com/legal-encyclopedia/overview-landlord-tenant-laws-new-york.html"
     nyc_content = agent.get_webpage(nyc_url)
 
     if nyc_content:
