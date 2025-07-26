@@ -64,6 +64,34 @@ User Input → WebScraperAgent → AnalyzerAgent → LetterAgent → Output
 - NVIDIA NIM API key (from hackathon)
 - Brev.dev GPU access
 
+## Learning Approach
+- Building step-by-step with understanding
+- User writes code with guidance, not copy-paste
+- Focus on understanding each component before moving forward
+
+## Key Concepts Learned
+- **APIs vs Web Scraping**: APIs give structured data, scraping parses HTML
+- **Response objects**: `.text` for content, `.status_code` for success/failure
+- **Virtual environments**: Isolate project dependencies
+- **Agent architecture**: Each agent has specific responsibility
+
+## AnalyzerAgent Design Questions
+1. What information does this agent need to make decisions?
+   - User's complaint
+   - Lease text
+   - Scraped laws
+   - Building violation history
+   
+2. How should it compare complaint to laws?
+   - Keyword matching (simple)
+   - Semantic similarity (advanced)
+   - NVIDIA NIM for understanding
+   
+3. What format for results?
+   - Structured dict with violations found
+   - Confidence scores
+   - Recommended actions
+
 ## Timeline
 - Tonight: Setup + basic scraper
 - Tomorrow: 4-hour build sprint during hackathon
