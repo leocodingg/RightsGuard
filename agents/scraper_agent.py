@@ -135,3 +135,18 @@ if __name__ == "__main__":
             print(para[:200] + "..." if len(para) > 200 else para)
     else:
         print("Failed to get NYC page")
+    
+    # Test NYC Open Data API
+    print("\n--- Testing NYC Open Data API ---")
+    violations = agent.search_nyc_open_data("heat")
+    
+    if violations:
+        print(f"\nFound {len(violations)} violations")
+        # Show first violation
+        if len(violations) > 0:
+            v = violations[0]
+            print("\nExample violation:")
+            for key, value in v.items():
+                print(f"  {key}: {value}")
+    else:
+        print("No violations found")
