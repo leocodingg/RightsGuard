@@ -89,6 +89,9 @@ class WebScraperAgent:
             print(f"Error calling API: {e}")
             return []
 
+
+
+
 # Test it - this only runs if we run this file directly
 if __name__ == "__main__":
     agent = WebScraperAgent()

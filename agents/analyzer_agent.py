@@ -1,57 +1,59 @@
 # AnalyzerAgent - Compares tenant complaints to legal information
+import os
+from typing import Dict, List
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
 
 class AnalyzerAgent:
     def __init__(self):
         # Give the agent a name
         self.name = "AnalyzerAgent"
         
-        # Common violation types we know about
-        self.violation_types = {
-            "heat": "Heat/Hot Water Issues",
-            "entry": "Illegal Entry",
-            "repair": "Maintenance Issues", 
-            "notice": "Notice Violations"
-        }
+        # Get API key from environment
+        api_key = os.getenv("NVIDIA_API_KEY")
+        if not api_key:
+            raise ValueError("NVIDIA_API_KEY not found in environment variables")
         
-        print(f"{self.name} initialized!")
+        # Initialize NVIDIA LLM - this is our connection to the AI
+        self.llm = ChatNVIDIA(
+            model="meta/llama-3.1-70b-instruct",
+            api_key=api_key,
+            temperature=0.1  # Low temperature for consistent legal analysis
+        )
+        
+        print(f"{self.name} initialized with NVIDIA LLM!")
     
     def analyze_complaint(self, user_complaint, scraped_laws, violations_data):
         """
-        Uses AI logic to analyze complaint against real legal data
+        Uses NVIDIA LLM to analyze complaint against real legal data
         """
-        print(f"\n{self.name} analyzing complaint with AI...")
+        print(f"\n{self.name} analyzing complaint with NVIDIA AI...")
         
-        # Build analysis prompt for NVIDIA LLM (we'll use this later)
-        analysis_prompt = f"""
-Analyze this tenant complaint against NYC housing laws:
+        # Build the prompt for the LLM
+        prompt = f"""You are a legal document analyst specializing in NYC tenant law.
+            Analyze this tenant complaint against NYC housing laws and provide a structured analysis.
 
-COMPLAINT: {user_complaint}
-LAWS: {scraped_laws if scraped_laws else "No laws provided"}
-VIOLATIONS: {violations_data if violations_data else "No violation history"}
+            TENANT COMPLAINT: {user_complaint}
 
-Determine:
-1. Is this legitimate? 
-2. What law applies?
-3. Case strength?
-4. Evidence needed?
-"""
+            RELEVANT NYC LAWS: {scraped_laws if scraped_laws else "No specific laws provided"}
+
+            BUILDING VIOLATION HISTORY: {violations_data[:3] if violations_data else "No violation history"}
+
+            Please analyze and provide:
+            1. Is this a legitimate legal issue? (Yes/No)
+            2. What specific NYC laws apply? (List statute numbers)
+            3. How strong is the case? (Weak/Moderate/Strong)
+            4. What evidence should the tenant collect?
+            5. What action should they take?
+
+            Provide factual information only. Do not give legal advice."""
+
+        # Call NVIDIA LLM - this is where we talk to the AI
+        response = self.llm.invoke(prompt)
         
-        # For now, smart analysis (later: real NVIDIA API call)
-        complaint_lower = user_complaint.lower()
-        violations = []
-        
-        if "heat" in complaint_lower:
-            violations.append("NYC Housing Code §27-2029 - Heat requirements")
-        if "entry" in complaint_lower:
-            violations.append("NYC Admin Code §27-2009 - Entry notice")
-        
+        # Parse and return the AI's response
         return {
-            "legitimate_issue": len(violations) > 0,
-            "applicable_laws": violations,
-            "case_strength": "Strong" if violations else "Weak",
-            "evidence_needed": "Photos, dates, communications",
-            "recommended_action": "Send complaint letter" if violations else "Gather evidence",
-            "prompt_for_nvidia": analysis_prompt
+            "analysis": response.content,
+            "source": "NVIDIA Llama 3.1 70B"
         }
 
 # Test the agent

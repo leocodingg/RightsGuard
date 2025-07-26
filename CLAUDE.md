@@ -36,13 +36,18 @@ User Input → WebScraperAgent → AnalyzerAgent → LetterAgent → Output
 - [x] Legal text extraction from multiple sources
 
 ### 🔄 In Progress
-- [ ] Adding real NVIDIA NIM integration to AnalyzerAgent
+- [ ] Improving AnalyzerAgent response parsing
 
 ### ✅ Recently Completed
 - [x] AnalyzerAgent skeleton with AI simulation
 - [x] Legal prompt building for NVIDIA LLM
-- [x] Structured analysis output (case strength, evidence needed)
-- [x] Test integration between WebScraperAgent and AnalyzerAgent
+- [x] Clean NVIDIA LLM integration (removed simulation code)
+- [x] Direct API call structure with self.llm.invoke()
+
+### ⚠️ Current Issues in AnalyzerAgent
+- **Response parsing**: Currently returns raw text, needs structured parsing
+- **Error handling**: No fallback if NVIDIA API fails
+- **NeMo Guardrails**: Not yet integrated for safety
 
 ### 📋 Todo
 - [ ] AnalyzerAgent with NeMo Guardrails
