@@ -36,8 +36,13 @@ User Input → WebScraperAgent → AnalyzerAgent → LetterAgent → Output
 - [x] Legal text extraction from multiple sources
 
 ### 🔄 In Progress
-- [ ] Testing combined API + web scraping data
-- [ ] Building AnalyzerAgent
+- [ ] Adding real NVIDIA NIM integration to AnalyzerAgent
+
+### ✅ Recently Completed
+- [x] AnalyzerAgent skeleton with AI simulation
+- [x] Legal prompt building for NVIDIA LLM
+- [x] Structured analysis output (case strength, evidence needed)
+- [x] Test integration between WebScraperAgent and AnalyzerAgent
 
 ### 📋 Todo
 - [ ] AnalyzerAgent with NeMo Guardrails

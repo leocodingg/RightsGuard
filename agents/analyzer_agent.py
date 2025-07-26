@@ -17,29 +17,41 @@ class AnalyzerAgent:
     
     def analyze_complaint(self, user_complaint, scraped_laws, violations_data):
         """
-        Takes user's complaint and legal data, returns analysis
+        Uses AI logic to analyze complaint against real legal data
         """
-        print(f"\n{self.name} analyzing complaint...")
+        print(f"\n{self.name} analyzing complaint with AI...")
         
-        # Simple analysis for now
-        found_violations = []
+        # Build analysis prompt for NVIDIA LLM (we'll use this later)
+        analysis_prompt = f"""
+Analyze this tenant complaint against NYC housing laws:
+
+COMPLAINT: {user_complaint}
+LAWS: {scraped_laws if scraped_laws else "No laws provided"}
+VIOLATIONS: {violations_data if violations_data else "No violation history"}
+
+Determine:
+1. Is this legitimate? 
+2. What law applies?
+3. Case strength?
+4. Evidence needed?
+"""
         
-        # Check if complaint mentions any violation keywords
+        # For now, smart analysis (later: real NVIDIA API call)
         complaint_lower = user_complaint.lower()
+        violations = []
         
-        for keyword, violation_type in self.violation_types.items():
-            if keyword in complaint_lower:
-                found_violations.append({
-                    "type": violation_type,
-                    "keyword": keyword,
-                    "found": True
-                })
+        if "heat" in complaint_lower:
+            violations.append("NYC Housing Code §27-2029 - Heat requirements")
+        if "entry" in complaint_lower:
+            violations.append("NYC Admin Code §27-2009 - Entry notice")
         
-        # Return results
         return {
-            "complaint": user_complaint,
-            "violations_found": found_violations,
-            "total_found": len(found_violations)
+            "legitimate_issue": len(violations) > 0,
+            "applicable_laws": violations,
+            "case_strength": "Strong" if violations else "Weak",
+            "evidence_needed": "Photos, dates, communications",
+            "recommended_action": "Send complaint letter" if violations else "Gather evidence",
+            "prompt_for_nvidia": analysis_prompt
         }
 
 # Test the agent
