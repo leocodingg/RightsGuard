@@ -289,16 +289,33 @@ def main():
                 analysis_text = analysis.get('analysis', 'No analysis available')
                 st.write(analysis_text)
             
-            # Show sources
-            with st.expander("📚 Legal Sources"):
-                st.write("**Relevant Laws:**")
-                for law in result['sources']['laws']:
-                    st.write(f"• {law}")
+            # Show NYC building violations prominently
+            if result['sources']['violations']:
+                st.markdown("### 🏢 Building Violation History")
+                st.markdown(f"Found **{len(result['sources']['violations'])}** official violations for this address:")
                 
-                if result['sources']['violations']:
-                    st.write("**NYC Violation Records:**")
-                    for violation in result['sources']['violations'][:3]:
-                        st.write(f"• {violation.get('violationtype', 'Violation')} - {violation.get('inspectiondate', 'Date unknown')}")
+                for i, violation in enumerate(result['sources']['violations'][:5], 1):
+                    violation_type = violation.get('violationtype', 'Unknown violation')
+                    inspection_date = violation.get('inspectiondate', 'Date unknown')
+                    violation_class = violation.get('class', 'Unknown class')
+                    
+                    st.markdown(f"""
+                    **{i}. {violation_type}**
+                    - Date: {inspection_date}
+                    - Class: {violation_class}
+                    """)
+                
+                if len(result['sources']['violations']) > 5:
+                    st.markdown(f"*...and {len(result['sources']['violations']) - 5} more violations*")
+            
+            # Show sources
+            with st.expander("📚 Legal References"):
+                if result['sources']['laws']:
+                    st.write("**Relevant Laws Referenced:**")
+                    for law in result['sources']['laws']:
+                        st.write(f"• {law}")
+                else:
+                    st.write("*Laws identified by AI analysis based on NYC tenant rights*")
         
         with col2:
             st.markdown("### 📄 Generated Letter")
