@@ -70,13 +70,14 @@ class AnalyzerAgent:
         
         # Build the prompt for the LLM with JSON structure request
         prompt = f"""You are a legal document analyst specializing in NYC tenant law.
-            Analyze this tenant complaint against NYC housing laws and provide a structured analysis.
+            Analyze this tenant complaint and identify which NYC housing laws apply.
 
             TENANT COMPLAINT: {user_complaint}
 
-            RELEVANT NYC LAWS: {scraped_laws if scraped_laws else "No specific laws provided"}
-
             BUILDING VIOLATION HISTORY: {violations_data[:3] if violations_data else "No violation history"}
+            
+            Based on your knowledge of NYC tenant law, identify the specific laws that apply to this complaint.
+            Include statute numbers when possible (e.g., NYC Admin Code §27-2009)
 
             Respond in JSON format with these exact fields:
             {{

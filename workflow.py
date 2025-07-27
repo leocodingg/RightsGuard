@@ -100,15 +100,9 @@ class RightsGuardWorkflow:
         """Node 1: Web scraping for legal information"""
         print("\n🕷️ WebScraper Agent: Gathering legal information...")
         
-        # Extract keywords from user complaint for targeted scraping
-        keywords = ['landlord', 'tenant', 'notice', 'entry', 'heat', 'repair', 'violation']
-        
-        # Get legal information (this would normally scrape)
-        # For now, using our existing method
-        scraped_laws = [
-            "NYC Admin Code §27-2009: Landlord must provide 48 hours notice before entry",
-            "NYC Housing Maintenance Code: Landlord must maintain heat between Oct 1 - May 31"
-        ]
+        # Let the LLM determine relevant laws based on the complaint
+        # This is smarter than web scraping!
+        scraped_laws = []  # We'll let the AnalyzerAgent handle law identification
         
         # Get NYC violation data
         violation_data = self.scraper.search_nyc_open_data(state["building_address"])

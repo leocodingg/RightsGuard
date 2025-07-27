@@ -205,6 +205,32 @@ streamlit run app.py
 # 4. If no API key, it auto-uses mock mode!
 ```
 
+### 🔧 Last-Minute Fixes (July 27 Evening)
+
+#### **VSCode Import Issues Fixed**
+- **Problem**: Yellow squiggly lines on langgraph imports
+- **Cause**: VSCode using global Python instead of venv
+- **Solution**: Updated `.vscode/settings.json` with:
+  - `extraPaths` pointing to venv site-packages
+  - Forces VSCode to recognize venv imports
+- **Action**: Reload VSCode window after settings update
+
+#### **Mock Mode Enhancement**
+- **Added**: Mock mode to LetterAgent (needs completion)
+- **Purpose**: App works without NVIDIA API key for demo
+- **Status**: AnalyzerAgent has mock mode, LetterAgent needs it
+
+#### **Architecture Simplification**
+- **Changed**: No more web scraping for laws
+- **New approach**: LLM identifies applicable laws directly
+- **Benefit**: More reliable, shows AI capability
+
+#### **Testing Status**
+- ✅ All packages installed in venv
+- ✅ Workflow imports successfully  
+- ⚠️ LetterAgent still needs mock mode
+- 🔄 Full end-to-end test pending
+
 ### 📚 POST-HACKATHON DEEP DIVE SECTIONS
 **Study these in detail AFTER the hackathon:**
 
