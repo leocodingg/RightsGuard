@@ -1,26 +1,15 @@
 # Core Framework
-streamlit==1.28.0
-fastapi==0.104.0
+streamlit
+python-dotenv
 
-# NVIDIA AI Stack
-nemo-toolkit[nlp]==1.22.0
-nemo-guardrails==0.5.0
-nvidia-ml-py==12.535.108
-
-# AI & LLM
-langchain==0.0.340
-langgraph==0.0.50
-langchain-nvidia-ai-endpoints==0.0.11
+# AI & LLM (latest versions for compatibility)
+langchain
+langgraph
+langchain-nvidia-ai-endpoints
 
 # Web Scraping
-requests==2.31.0
-beautifulsoup4==4.12.0
-selenium==4.15.0
+requests
+beautifulsoup4
 
 # Data Processing
-pandas==2.1.0
-python-dotenv==1.0.0
-numpy==1.24.0
-
-# Utilities
-uvicorn==0.24.0
+pandas

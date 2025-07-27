@@ -8,7 +8,7 @@ try:
     GUARDRAILS_AVAILABLE = True
 except ImportError:
     GUARDRAILS_AVAILABLE = False
-    print("⚠️ NeMo Guardrails not available, running without safety guardrails")
+    print("⚠️ NeMo Guardrails not available (expected in cloud deployment), running without safety guardrails")
 
 # Import mock responses for backup
 try:
