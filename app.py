@@ -92,11 +92,11 @@ def init_session_state():
 def display_agent_status(stage):
     """Display the status of each agent in the workflow"""
     stages = {
-        'idle': ['⏸️ Web Scraper', '⏸️ AI Analyzer', '⏸️ Letter Generator'],
-        'scraping': ['🔄 Web Scraper', '⏸️ AI Analyzer', '⏸️ Letter Generator'],
-        'analyzing': ['✅ Web Scraper', '🔄 AI Analyzer', '⏸️ Letter Generator'],
-        'generating': ['✅ Web Scraper', '✅ AI Analyzer', '🔄 Letter Generator'],
-        'complete': ['✅ Web Scraper', '✅ AI Analyzer', '✅ Letter Generator']
+        'idle': ['⏸️ Research Agent', '⏸️ Legal Analyst', '⏸️ Document Writer'],
+        'scraping': ['🔄 Research Agent', '⏸️ Legal Analyst', '⏸️ Document Writer'],
+        'analyzing': ['✅ Research Agent', '🔄 Legal Analyst', '⏸️ Document Writer'],
+        'generating': ['✅ Research Agent', '✅ Legal Analyst', '🔄 Document Writer'],
+        'complete': ['✅ Research Agent', '✅ Legal Analyst', '✅ Document Writer']
     }
     
     status_container = st.container()
@@ -214,7 +214,7 @@ def main():
                 
                 with progress_placeholder.container():
                     display_agent_status('scraping')
-                    st.info("🕷️ Gathering legal information and building history...")
+                    st.info("🔍 Researching building records and legal precedents...")
                 
                 # Run the workflow
                 result = st.session_state.workflow.process_complaint(
@@ -368,23 +368,23 @@ def main():
             demo_cols = st.columns(3)
             with demo_cols[0]:
                 st.markdown("""
-                **1. 🕷️ Smart Research**
-                - Scrapes NYC housing laws
-                - Checks violation databases
-                - Reviews community complaints
+                **1. 🔍 Research Agent**
+                - Searches NYC violation records
+                - Checks building complaint history
+                - Gathers legal precedents
                 """)
             
             with demo_cols[1]:
                 st.markdown("""
-                **2. 🧠 AI Analysis**
-                - NVIDIA-powered legal analysis
-                - Compares your case to law
-                - Identifies strongest arguments
+                **2. 🧠 Legal Analyst**
+                - NVIDIA AI-powered analysis
+                - Compares case to tenant law
+                - Identifies violation strength
                 """)
             
             with demo_cols[2]:
                 st.markdown("""
-                **3. 📝 Professional Letter**
+                **3. 📝 Document Writer**
                 - Generates formal complaint
                 - Includes legal citations
                 - Ready to send to landlord
