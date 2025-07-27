@@ -337,6 +337,64 @@ brev create rightsguard-demo
 
 ---
 
+## Current Limitations & Acknowledgments
+
+### Technical Limitations
+1. **JSON Storage** - Not scalable for thousands of users
+   - Single file can become bottleneck
+   - No concurrent write protection
+   - Limited query capabilities
+
+2. **API Dependency** - Requires NVIDIA API key
+   - Costs scale with usage
+   - Network latency for each request
+   - No offline capability
+
+3. **Single City Focus** - NYC laws only
+   - Would need retraining for other cities
+   - Legal variations by state not handled
+
+4. **Language Support** - English only currently
+   - Many NYC tenants speak other languages
+   - Legal terms particularly challenging to translate
+
+### Legal & Ethical Considerations
+1. **Not Legal Advice** - Information only
+   - Cannot replace actual lawyer
+   - Disclaimer required but users might ignore
+   - Risk of misinterpretation
+
+2. **Data Privacy** - Complaints stored in system
+   - Sensitive tenant information
+   - No encryption currently
+   - GDPR/privacy compliance needed
+
+3. **Accuracy Concerns** - LLM hallucination risk
+   - Laws change frequently
+   - Need regular updates
+   - No real-time law verification
+
+### UX Limitations
+1. **Desktop Focused** - Streamlit not mobile-optimized
+   - Many tenants only have phones
+   - UI could be more accessible
+
+2. **Technical Barriers** - Requires some tech literacy
+   - Form filling might intimidate some users
+   - No voice interface yet
+
+### Scalability Issues
+1. **Single Instance** - No load balancing
+   - Would crash with many concurrent users
+   - No caching layer
+   - Memory limits on free hosting
+
+2. **Manual Updates** - Laws must be updated manually
+   - No automated scraping of law changes
+   - Community memory needs moderation
+
+---
+
 ## Future Enhancements
 
 ### Technical Upgrades
