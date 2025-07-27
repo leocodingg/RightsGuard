@@ -141,13 +141,69 @@ pandas
 4. **Data Quality:** NYC Open Data API has inconsistent field completeness
 5. **User Testing:** UI issues only apparent when viewed by end users
 
+## Latest Improvements (Session 2)
+
+### 11. Enhanced Community Memory System
+**Problem:** Simple JSON storage showing user's own complaint as "previous complaint"
+**Solution:** Smart categorization and duplicate detection
+- Complaint categorization (heating, mold, water, pests, privacy, maintenance)
+- Duplicate detection within 24 hours for same category
+- Skip showing most recent complaint (likely user's own)
+- Visual category indicators with emojis
+- Metrics display for complaint types
+
+### 12. Building Violations Full Display
+**Problem:** Violation descriptions truncated at 150 characters
+**Solution:** Complete violation details
+- Removed character limit on violation descriptions
+- Added expandable section for violations beyond first 3
+- "Show X more violations" button for user control
+- Full legal code descriptions visible
+
+### 13. Agent Rebranding
+**Problem:** Technical names like "Web Scraper" not user-friendly
+**Solution:** Professional agent names
+- Research Agent (was Web Scraper)
+- Legal Analyst (was AI Analyzer)  
+- Document Writer (was Letter Generator)
+- Updated all UI text to match new naming
+
+### 14. Updated App Description
+**Changed from:** "AI-Powered Tenant Rights Analyzer with Community Memory"
+**Changed to:** "Multi-Agent AI System for Tenant Rights Protection"
+- Better reflects agentic AI architecture
+- Highlights multi-agent capabilities
+
+## Technical Architecture
+
+### Multi-Agent System
+- **True Agentic AI:** Autonomous agents with specialized roles
+- **LangGraph Orchestration:** State management and agent coordination
+- **GPU Acceleration:** Via NVIDIA AI Endpoints (not local GPU)
+
+### Technology Usage
+**Active Technologies:**
+- LangChain (NVIDIA LLM integration)
+- LangGraph (agent orchestration)
+- NVIDIA AI Endpoints (GPU-accelerated inference)
+- Streamlit Cloud (hosting)
+
+**Configured But Not Used:**
+- NeMo Guardrails (compatibility issues)
+- Brev.dev (unnecessary with API approach)
+
 ## Impact
 
 RightsGuard now provides tenants with:
 - **Legal Intelligence:** AI-powered analysis of tenant rights violations
-- **Community Knowledge:** Shared building complaint history
-- **Professional Documentation:** Properly formatted legal letters
+- **Community Knowledge:** Smart categorized building complaint history
+- **Professional Documentation:** Properly formatted legal letters with actual tenant info
 - **Public Access:** Free web-based tool available 24/7
-- **Real Data:** Integration with official NYC violation records
+- **Real Data:** Full NYC violation records with expandable details
+- **Better UX:** User-friendly agent names and smart duplicate detection
 
-The application successfully demonstrates the potential of AI-powered civic technology for protecting tenant rights and empowering vulnerable populations.
+The application successfully demonstrates:
+- **Advanced Multi-Agent AI** with autonomous decision-making
+- **GPU-Accelerated Computing** via NVIDIA infrastructure
+- **Practical Civic Technology** for vulnerable populations
+- **Modern Cloud Architecture** using APIs over local compute
