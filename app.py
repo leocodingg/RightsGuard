@@ -2,6 +2,12 @@
 import streamlit as st
 import json
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
 from workflow import RightsGuardWorkflow
 
 # Page configuration
