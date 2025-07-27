@@ -252,8 +252,42 @@ def main():
         
         with col1:
             st.markdown("### 🧠 AI Analysis")
-            analysis_text = result['analysis']['analysis']
-            st.write(analysis_text)
+            
+            # Display structured analysis if available
+            analysis = result['analysis']
+            if 'is_legitimate' in analysis:
+                # Structured analysis format
+                legitimacy = analysis.get('is_legitimate', 'Unknown')
+                case_strength = analysis.get('case_strength', 'Unknown')
+                
+                # Status indicator
+                status_color = "🟢" if legitimacy == "Yes" else "🔴" if legitimacy == "No" else "🟡"
+                st.markdown(f"**{status_color} Complaint Status:** {legitimacy}")
+                
+                strength_color = {"Strong": "🟢", "Moderate": "🟡", "Weak": "🔴"}.get(case_strength, "⚪")
+                st.markdown(f"**{strength_color} Case Strength:** {case_strength}")
+                
+                # Applicable laws
+                if analysis.get('applicable_laws'):
+                    st.markdown("**📜 Applicable Laws:**")
+                    for law in analysis['applicable_laws']:
+                        st.write(f"• {law}")
+                
+                # Evidence needed
+                if analysis.get('evidence_needed'):
+                    st.markdown("**📋 Evidence to Collect:**")
+                    for evidence in analysis['evidence_needed']:
+                        st.write(f"• {evidence}")
+                
+                # Recommended actions
+                if analysis.get('recommended_actions'):
+                    st.markdown("**⚡ Recommended Actions:**")
+                    for action in analysis['recommended_actions']:
+                        st.write(f"• {action}")
+            else:
+                # Fallback to raw analysis text
+                analysis_text = analysis.get('analysis', 'No analysis available')
+                st.write(analysis_text)
             
             # Show sources
             with st.expander("📚 Legal Sources"):
