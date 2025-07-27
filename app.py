@@ -152,7 +152,7 @@ def main():
     
     # Header
     st.markdown('<h1 class="main-header">⚖️ RightsGuard</h1>', unsafe_allow_html=True)
-    st.markdown('<h3 style="text-align: center; color: #666;">AI-Powered Tenant Rights Analyzer with Community Memory</h3>', 
+    st.markdown('<h3 style="text-align: center; color: #666;">Multi-Agent AI System for Tenant Rights Protection</h3>', 
                 unsafe_allow_html=True)
     
     # Sidebar for input
