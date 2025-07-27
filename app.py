@@ -5,8 +5,23 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
+# Load environment variables from .env file (for local development)
 load_dotenv()
+
+# Debug: Check if API key is available
+if os.getenv("NVIDIA_API_KEY"):
+    print("✅ NVIDIA_API_KEY found in environment")
+else:
+    print("❌ NVIDIA_API_KEY not found in environment")
+    # Check if it's in Streamlit secrets
+    try:
+        if st.secrets.get("NVIDIA_API_KEY"):
+            print("✅ Found NVIDIA_API_KEY in Streamlit secrets")
+            os.environ["NVIDIA_API_KEY"] = st.secrets["NVIDIA_API_KEY"]
+        else:
+            print("❌ NVIDIA_API_KEY not in Streamlit secrets either")
+    except:
+        print("❌ Error accessing Streamlit secrets")
 
 from workflow import RightsGuardWorkflow
 
