@@ -31,27 +31,26 @@ class LetterAgent:
         # Build the prompt for letter generation
         prompt = f"""You are a professional legal document writer specializing in tenant rights.
 
-Generate a formal complaint letter based on this analysis:
+Generate a formal complaint letter using the EXACT information provided below. Do NOT use placeholders like [Your Name] or [Your Address]. Use the actual names and addresses provided.
 
 ANALYSIS: {analysis_data.get('analysis', 'No analysis provided')}
 
-TENANT INFORMATION:
-- Name: {tenant_info.get('name', 'Tenant Name')}
-- Address: {tenant_info.get('address', 'Property Address')}
-- Landlord: {tenant_info.get('landlord', 'Landlord Name')}
-- Date of Issue: {tenant_info.get('date', 'Date of Issue')}
+TENANT INFORMATION (USE THESE EXACT VALUES):
+- Tenant Name: {tenant_info.get('name', 'Tenant Name')}
+- Property Address: {tenant_info.get('address', 'Property Address')}
+- Landlord/Company: {tenant_info.get('landlord', 'Landlord Name')}
+- Today's Date: {tenant_info.get('date', 'Date of Issue')}
 
-Generate a professional complaint letter that:
-1. Uses formal business letter format
-2. States the facts clearly and objectively
-3. References relevant NYC laws and statutes
-4. Requests specific remedial action
-5. Sets a reasonable deadline for response
-6. Maintains professional tone throughout
+LETTER FORMAT REQUIREMENTS:
+1. Start with the tenant's name and property address (not placeholders)
+2. Address the letter to the specific landlord/company name provided
+3. Use today's date as provided
+4. Include a clear "Re:" subject line about the specific property address
+5. Reference relevant NYC laws and statutes from the analysis
+6. Request specific remedial action with a 10-day deadline
+7. End with the tenant's actual name
 
-Do not provide legal advice. Focus on documenting the issues and requesting resolution.
-
-Begin with proper letter formatting including date, addresses, and "Re:" subject line."""
+CRITICAL: Replace ALL placeholder text with the actual information provided above. Do not include any text in brackets like [Name] or [Address]."""
 
         # Call NVIDIA LLM to generate the letter
         response = self.llm.invoke(prompt)
