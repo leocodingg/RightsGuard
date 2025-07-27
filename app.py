@@ -339,8 +339,7 @@ def main():
                     if description and len(description) > 50:
                         # Clean up the legal description
                         description = description.replace('§', 'Section').replace('ADM CODE', 'Admin Code')
-                        # Show first 150 characters
-                        description = description[:150] + "..." if len(description) > 150 else description
+                        # Don't truncate - show full description
                     
                     violation_type = violation.get('violationtype', 'Housing Code Violation')
                     inspection_date = violation.get('inspectiondate', 'Date unknown')
@@ -362,8 +361,33 @@ def main():
                     - **Details:** {description}
                     """)
                 
+                # Show additional violations in expandable section
                 if len(result['sources']['violations']) > 3:
-                    st.markdown(f"*...and {len(result['sources']['violations']) - 3} more violations in city records*")
+                    additional_count = len(result['sources']['violations']) - 3
+                    with st.expander(f"📋 Show {additional_count} more violations"):
+                        for i, violation in enumerate(result['sources']['violations'][3:], 4):
+                            description = violation.get('novdescription', 'No description available')
+                            if description and len(description) > 50:
+                                description = description.replace('§', 'Section').replace('ADM CODE', 'Admin Code')
+                            
+                            violation_type = violation.get('violationtype', 'Housing Code Violation')
+                            inspection_date = violation.get('inspectiondate', 'Date unknown')
+                            if inspection_date != 'Date unknown':
+                                try:
+                                    date_part = inspection_date.split('T')[0]
+                                    inspection_date = date_part
+                                except:
+                                    pass
+                            
+                            violation_class = violation.get('class', 'Unknown')
+                            status = violation.get('currentstatus', 'Unknown status')
+                            
+                            st.markdown(f"""
+                            **{i}. {violation_type}**
+                            - **Date:** {inspection_date}
+                            - **Class:** {violation_class} | **Status:** {status}
+                            - **Details:** {description}
+                            """)
                     
                 st.markdown("*Source: NYC Department of Housing Preservation & Development*")
             
