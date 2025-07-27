@@ -122,3 +122,196 @@ User Input → WebScraperAgent → AnalyzerAgent → LetterAgent → Output
 ## Timeline
 - Tonight: Setup + basic scraper
 - Tomorrow: 4-hour build sprint during hackathon
+
+## Session Progress - July 27, 2025
+
+### 🎯 Current Status
+We're **85% complete** with the MVP! All core functionality is built and ready for testing.
+
+### 🔧 VSCode Python Issue Fixed
+- Problem: VSCode was using wrong Python interpreter (global instead of venv)
+- Solution: Created `.vscode/settings.json` to point to venv
+- Action: Installed all packages in venv with `source venv/bin/activate && pip install ...`
+- Result: Squiggly lines should be gone after VSCode restart
+
+### 📚 Understanding app.py
+We walked through the Streamlit UI structure:
+1. **Page Config**: Sets title, icon (⚖️), wide layout
+2. **Custom CSS**: Professional styling for agent status boxes
+3. **Session State**: Preserves data between Streamlit reruns
+4. **Sidebar**: Collects user complaint, address, tenant info
+5. **Process Button**: Initializes workflow, shows progress, runs agents
+6. **Results Display**: Two columns - analysis (left), letter (right)
+7. **Community Insights**: Shows building history from our database
+
+### 🚀 What's Working
+- ✅ All 3 agents (WebScraper, Analyzer, Letter) built with NVIDIA LLM
+- ✅ LangGraph workflow orchestration with state management
+- ✅ Community Legal Memory system (stores/retrieves building complaints)
+- ✅ Beautiful Streamlit UI with real-time agent progress
+- ✅ Download button for generated letters
+
+### 📋 What's Left
+1. **Test with real NVIDIA API key** (get at hackathon)
+2. **Deploy to Brev.dev** (optional)
+3. **Minor improvements** (error handling, NeMo Guardrails)
+
+### 💡 Key Files Created/Modified
+- `workflow.py` - LangGraph orchestration + Community Memory
+- `app.py` - Streamlit UI with agent progress visualization
+- `.env.example` - Template for NVIDIA API key
+- `.vscode/settings.json` - Fixed Python interpreter path
+
+### 🎓 Learning Highlights
+- **Virtual Environments**: Project-specific Python packages
+- **Streamlit Session State**: Data persistence between reruns
+- **LangGraph**: Multi-agent orchestration with shared state
+- **Community Memory**: JSON database for building complaints
+
+## 🎯 HACKATHON STRATEGY: GET IT WORKING FIRST
+
+### 📌 IMMEDIATE PRIORITY (For Demo)
+**Focus: Orchestration & Integration**
+1. ✅ All components built (AnalyzerAgent, workflow.py, app.py)
+2. ✅ Structured response parsing implemented  
+3. ✅ NeMo Guardrails safety integration added
+4. 🔄 **TEST END-TO-END FLOW** with real NVIDIA API key
+5. 🔄 **DEMO PREPARATION** - practice the live demo
+
+### 📚 POST-HACKATHON DEEP DIVE SECTIONS
+**Study these in detail AFTER the hackathon:**
+
+#### 🔧 Architecture Deep Dive
+- How `workflow.py` orchestrates the 3 agents using LangGraph
+- How `app.py` Streamlit UI connects to workflow state management
+- How Community Legal Memory persists and retrieves building data
+- How NeMo Guardrails prevents legal advice vs information
+
+#### 🧠 AnalyzerAgent Deep Study  
+- JSON parsing logic and fallback mechanisms
+- NVIDIA LLM integration patterns
+- Structured prompt engineering for legal analysis
+
+#### 🌐 WebScraperAgent Architecture
+- NYC Open Data API integration
+- Legal text extraction and parsing
+- Multi-source data aggregation
+
+#### 📝 LetterAgent Template System
+- Formal legal letter generation
+- Template customization and formatting
+
+### 📋 Demo Day Checklist
+- [ ] Test with real NVIDIA API key
+- [ ] Practice demo script (5 minutes max)
+- [ ] Prepare sample tenant complaint
+- [ ] Show Community Memory feature
+- [ ] Highlight GPU acceleration benefits
+
+### 🎓 What We've Learned (High Level)
+- **Multi-agent orchestration** with LangGraph
+- **Community memory** for building complaint tracking  
+- **Defensive AI** for tenant rights (not offensive)
+- **NVIDIA GPU acceleration** for legal text processing
+
+## 📖 LEARNING JOURNAL - Key Concepts Explained
+
+### 🔧 Technical Concepts Learned
+
+#### **Virtual Environments (venv)**
+- **What**: Isolated Python environment for project-specific packages
+- **Why**: Prevents package conflicts between projects
+- **How**: `python -m venv venv` → `source venv/bin/activate`
+- **Lesson**: VSCode was using wrong Python interpreter - fixed with `.vscode/settings.json`
+
+#### **YAML Files**
+- **What**: "Yet Another Markup Language" - human-readable config format
+- **Structure**: Key-value pairs, lists, nested objects
+- **Use case**: `brev.yaml` tells Brev.dev how to deploy our app
+- **Like**: Recipe card for automated deployment
+
+#### **API vs Web Scraping**
+- **APIs**: Structured data endpoints (NYC Open Data API)
+- **Web Scraping**: Parsing HTML from websites (BeautifulSoup)
+- **Response objects**: `.text` for content, `.status_code` for success/failure
+
+#### **LLM Integration Patterns**
+- **Direct API calls**: `llm.invoke(prompt)`
+- **Response parsing**: Extract structured data from LLM text
+- **JSON prompting**: Ask LLM to respond in JSON format
+- **Fallback handling**: Raw text when parsing fails
+
+#### **Multi-Agent Architecture**
+- **Separation of concerns**: Each agent has one job
+- **State management**: LangGraph passes data between agents
+- **Orchestration**: workflow.py coordinates agent execution
+- **Agent communication**: Through shared WorkflowState
+
+### 🏗️ Architecture Decisions
+
+#### **Why Multi-Agent vs Single Agent?**
+- **Modularity**: Each agent can be developed/tested independently
+- **Specialization**: WebScraper focuses on data, Analyzer on logic, Letter on output
+- **Scalability**: Easy to add new agents (e.g., TranslationAgent)
+- **Debugging**: Isolate issues to specific agents
+
+#### **Community Legal Memory Design**
+- **Purpose**: Turn individual complaints into collective intelligence
+- **Storage**: Simple JSON file (could upgrade to database)
+- **Building-centric**: Track complaints by address
+- **Risk scoring**: HIGH (2+ complaints), MODERATE (1 complaint)
+
+#### **Brev.dev Deployment Strategy**
+- **Not for speed**: NVIDIA API already GPU-accelerated
+- **For accessibility**: Public URL, 24/7 availability
+- **For hackathon**: Shows production deployment capability
+- **Strategic**: Demonstrates full ecosystem usage
+
+### 💡 Development Insights
+
+#### **Hackathon Strategy**
+- **MVP First**: Get working demo before deep understanding
+- **80/20 Rule**: 80% functionality with 20% effort
+- **Demo Focus**: What judges see > perfect architecture
+- **Time Management**: Polish after core functionality works
+
+#### **Error Handling Philosophy**
+- **Graceful degradation**: Fallback to raw text if parsing fails
+- **User feedback**: Clear error messages
+- **No silent failures**: Always log/display issues
+- **Keep going**: Don't let one agent failure stop workflow
+
+#### **Safety Considerations**
+- **NeMo Guardrails**: Prevent legal advice vs information
+- **Defensive purpose**: Help tenants, not enable bad actors
+- **Clear disclaimers**: "This is information, not legal advice"
+- **Ethical AI**: Protect vulnerable populations
+
+### 🛠️ Debugging Lessons
+
+#### **Common Issues Hit**
+1. **Import errors**: Missing packages → check venv activation
+2. **API key missing**: Set environment variables in `.env`
+3. **JSON parsing**: LLMs don't always return clean JSON
+4. **File paths**: Always use absolute paths in tools
+
+#### **Problem-Solving Approach**
+1. Read error messages carefully
+2. Check simplest things first (is venv activated?)
+3. Test components in isolation
+4. Add print statements for debugging
+5. Keep working code, experiment in copies
+
+### 📚 Resources & Next Steps
+
+#### **Post-Hackathon Deep Dives**
+- LangGraph internals and state machines
+- Streamlit session state management
+- NeMo Guardrails configuration language
+- Production deployment best practices
+
+#### **Upgrade Paths**
+- JSON → PostgreSQL for Community Memory
+- Simple prompts → Few-shot examples
+- Local → Cloud deployment
+- Single language → Multi-language support

@@ -1,0 +1,53 @@
+# Brev.dev GPU deployment configuration for RightsGuard
+name: rightsguard-nvidia-hackathon
+description: Multi-agent system for tenant rights protection using NVIDIA AI
+
+# Use NVIDIA GPU-enabled template
+template: nvidia-pytorch
+
+# Environment variables (Brev will prompt for NVIDIA_API_KEY during deployment)
+environment:
+  NVIDIA_API_KEY: ${NVIDIA_API_KEY}
+  PYTHONPATH: /workspace
+
+# Setup commands - run once when creating the instance
+setup: |
+  echo "🚀 Setting up RightsGuard on Brev.dev GPU instance..."
+  cd /workspace
+  
+  # Install Python dependencies
+  pip install --upgrade pip
+  pip install -r requirements.txt
+  
+  echo "✅ Setup complete!"
+
+# Start command - runs your app
+start: |
+  echo "🏛️ Starting RightsGuard Tenant Rights Assistant..."
+  cd /workspace
+  
+  # Run Streamlit app on port 8501
+  streamlit run app.py \
+    --server.port 8501 \
+    --server.address 0.0.0.0 \
+    --server.enableCORS false \
+    --server.enableXsrfProtection false
+
+# Expose Streamlit port
+ports:
+  - 8501
+
+# Enable GPU acceleration
+gpu: true
+
+# Optional: Specify GPU type (defaults to best available)
+# gpu_type: A100
+
+# Health check endpoint
+healthcheck:
+  path: /
+  port: 8501
+  interval: 30s
+
+# Auto-restart on failure
+restart_policy: always
