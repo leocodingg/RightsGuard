@@ -4,6 +4,10 @@
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": false,
-    "python.analysis.extraPaths": ["${workspaceFolder}/venv/lib/python3.13/site-packages"],
-    "python.autoComplete.extraPaths": ["${workspaceFolder}/venv/lib/python3.13/site-packages"]
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/venv/lib/python3.13/site-packages"
+    ],
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/venv/lib/python3.13/site-packages"
+    ]
 }
