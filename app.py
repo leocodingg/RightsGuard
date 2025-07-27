@@ -63,6 +63,7 @@ st.markdown("""
     }
     .community-insight {
         background-color: #e7f3ff;
+        color: #1f4e79;
         padding: 15px;
         border-radius: 10px;
         border-left: 5px solid #1f77b4;
@@ -70,6 +71,7 @@ st.markdown("""
     }
     .warning-box {
         background-color: #fff3cd;
+        color: #664d03;
         padding: 15px;
         border-radius: 10px;
         border-left: 5px solid #ffc107;
