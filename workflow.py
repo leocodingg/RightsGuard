@@ -63,13 +63,74 @@ class RightsGuardWorkflow:
         address_key = address.lower().strip()
         return self.community_memory["buildings"].get(address_key, [])
     
+    def categorize_complaint(self, complaint: str) -> str:
+        """Categorize complaint by type"""
+        complaint_lower = complaint.lower()
+        
+        if any(word in complaint_lower for word in ['heat', 'heating', 'cold', 'temperature']):
+            return "heating_issues"
+        elif any(word in complaint_lower for word in ['mold', 'mould', 'fungus']):
+            return "mold_issues"  
+        elif any(word in complaint_lower for word in ['leak', 'water', 'flooding', 'drip']):
+            return "water_issues"
+        elif any(word in complaint_lower for word in ['pest', 'roach', 'mice', 'rat', 'bug']):
+            return "pest_issues"
+        elif any(word in complaint_lower for word in ['entry', 'enter', 'notice', 'privacy']):
+            return "privacy_violations"
+        elif any(word in complaint_lower for word in ['repair', 'broken', 'fix', 'maintenance']):
+            return "maintenance_issues"
+        else:
+            return "other_issues"
+    
+    def is_duplicate_complaint(self, new_complaint: str, existing_complaints: List[Dict], session_id: str = None) -> bool:
+        """Check if complaint is duplicate or too similar to recent ones"""
+        if not existing_complaints:
+            return False
+            
+        new_category = self.categorize_complaint(new_complaint)
+        now = datetime.now()
+        
+        # Check for duplicates in last 24 hours
+        for complaint in existing_complaints[-5:]:  # Check last 5 complaints
+            try:
+                complaint_date = datetime.fromisoformat(complaint['date'])
+                hours_diff = (now - complaint_date).total_seconds() / 3600
+                
+                # If same category within 24 hours, likely duplicate
+                if hours_diff <= 24:
+                    existing_category = self.categorize_complaint(complaint['complaint'])
+                    if new_category == existing_category:
+                        return True
+                        
+                # If very similar text within 7 days, definitely duplicate
+                if hours_diff <= 168:  # 7 days
+                    similarity = len(set(new_complaint.lower().split()) & set(complaint['complaint'].lower().split()))
+                    if similarity >= 3:  # 3+ matching words
+                        return True
+            except:
+                continue
+                
+        return False
+    
     def store_complaint(self, address: str, complaint: str, landlord: str = None):
-        """Store a new complaint in community memory"""
+        """Store a new complaint in community memory with duplicate detection"""
         address_key = address.lower().strip()
+        
+        # Get existing complaints for this building
+        existing_complaints = self.community_memory["buildings"].get(address_key, [])
+        
+        # Check for duplicates (prevent spam and test noise)
+        if self.is_duplicate_complaint(complaint, existing_complaints):
+            print(f"⚠️ Similar complaint recently filed for {address} - skipping duplicate")
+            return
+        
+        # Categorize the complaint
+        category = self.categorize_complaint(complaint)
         
         complaint_record = {
             "date": datetime.now().isoformat(),
-            "complaint": complaint,
+            "complaint": complaint[:150],  # Limit length for display
+            "category": category,
             "landlord": landlord
         }
         
@@ -94,7 +155,7 @@ class RightsGuardWorkflow:
         # Save to disk
         self.save_community_memory()
         
-        print(f"💾 Stored complaint for {address} in Community Legal Memory")
+        print(f"💾 Stored {category} complaint for {address} in Community Legal Memory")
     
     def web_scraper_node(self, state: WorkflowState) -> WorkflowState:
         """Node 1: Web scraping for legal information"""

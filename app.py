@@ -132,12 +132,51 @@ def display_community_insights(building_history, total_complaints):
         </div>
         """, unsafe_allow_html=True)
         
-        # Show recent complaints
-        st.markdown("#### Recent Building Complaints:")
-        for i, complaint in enumerate(building_history[-3:]):  # Show last 3
-            date = complaint.get('date', 'Unknown date')
-            issue = complaint.get('complaint', 'No details')
-            st.write(f"**{date[:10]}:** {issue[:100]}...")
+        # Show complaint categories if available
+        complaint_categories = {}
+        for complaint in building_history:
+            category = complaint.get('category', 'other_issues')
+            complaint_categories[category] = complaint_categories.get(category, 0) + 1
+        
+        if complaint_categories:
+            st.markdown("#### Issue Categories:")
+            category_names = {
+                'heating_issues': '🔥 Heating',
+                'mold_issues': '🦠 Mold', 
+                'water_issues': '💧 Water/Leaks',
+                'pest_issues': '🐛 Pests',
+                'privacy_violations': '🔒 Privacy',
+                'maintenance_issues': '🔧 Maintenance',
+                'other_issues': '❓ Other'
+            }
+            
+            cols = st.columns(min(len(complaint_categories), 4))
+            for i, (category, count) in enumerate(complaint_categories.items()):
+                with cols[i % 4]:
+                    display_name = category_names.get(category, category.replace('_', ' ').title())
+                    st.metric(display_name, count)
+        
+        # Show recent complaints (but skip the most recent to avoid showing user's own)
+        if len(building_history) > 1:
+            st.markdown("#### Recent Community Complaints:")
+            for complaint in building_history[-3:-1]:  # Skip last one, show previous 2
+                date = complaint.get('date', 'Unknown date')
+                issue = complaint.get('complaint', 'No details')
+                category = complaint.get('category', 'other_issues')
+                
+                category_emoji = {
+                    'heating_issues': '🔥',
+                    'mold_issues': '🦠', 
+                    'water_issues': '💧',
+                    'pest_issues': '🐛',
+                    'privacy_violations': '🔒',
+                    'maintenance_issues': '🔧',
+                    'other_issues': '❓'
+                }.get(category, '❓')
+                
+                st.write(f"{category_emoji} **{date[:10]}:** {issue[:80]}...")
+            
+            st.markdown("*Anonymized complaints from other tenants*")
     else:
         st.markdown("""
         <div class="community-insight">
