@@ -292,21 +292,41 @@ def main():
             # Show NYC building violations prominently
             if result['sources']['violations']:
                 st.markdown("### 🏢 Building Violation History")
-                st.markdown(f"Found **{len(result['sources']['violations'])}** official violations for this address:")
+                st.markdown(f"Found **{len(result['sources']['violations'])}** official NYC violations for this address:")
                 
-                for i, violation in enumerate(result['sources']['violations'][:5], 1):
-                    violation_type = violation.get('violationtype', 'Unknown violation')
+                for i, violation in enumerate(result['sources']['violations'][:3], 1):
+                    # Get the most descriptive field available
+                    description = violation.get('novdescription', 'No description available')
+                    if description and len(description) > 50:
+                        # Clean up the legal description
+                        description = description.replace('§', 'Section').replace('ADM CODE', 'Admin Code')
+                        # Show first 150 characters
+                        description = description[:150] + "..." if len(description) > 150 else description
+                    
+                    violation_type = violation.get('violationtype', 'Housing Code Violation')
                     inspection_date = violation.get('inspectiondate', 'Date unknown')
-                    violation_class = violation.get('class', 'Unknown class')
+                    if inspection_date != 'Date unknown':
+                        try:
+                            # Format date nicely
+                            date_part = inspection_date.split('T')[0]  # Get just the date part
+                            inspection_date = date_part
+                        except:
+                            pass
+                    
+                    violation_class = violation.get('class', 'Unknown')
+                    status = violation.get('currentstatus', 'Unknown status')
                     
                     st.markdown(f"""
                     **{i}. {violation_type}**
-                    - Date: {inspection_date}
-                    - Class: {violation_class}
+                    - **Date:** {inspection_date}
+                    - **Class:** {violation_class} | **Status:** {status}
+                    - **Details:** {description}
                     """)
                 
-                if len(result['sources']['violations']) > 5:
-                    st.markdown(f"*...and {len(result['sources']['violations']) - 5} more violations*")
+                if len(result['sources']['violations']) > 3:
+                    st.markdown(f"*...and {len(result['sources']['violations']) - 3} more violations in city records*")
+                    
+                st.markdown("*Source: NYC Department of Housing Preservation & Development*")
             
             # Show sources
             with st.expander("📚 Legal References"):
